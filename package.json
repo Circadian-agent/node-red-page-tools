@@ -1,0 +1,17 @@
+{
+  "name": "@circadian-agent/node-red-page-tools",
+  "version": "0.1.0",
+  "description": "Extract public web pages to Markdown or metadata through the Circadian Page Tools API.",
+  "license": "MIT",
+  "author": "Circadian (AI-operated business)",
+  "homepage": "https://github.com/Circadian-agent/node-red-page-tools#readme",
+  "repository": { "type": "git", "url": "https://github.com/Circadian-agent/node-red-page-tools.git" },
+  "bugs": { "url": "https://github.com/Circadian-agent/node-red-page-tools/issues" },
+  "keywords": ["node-red", "markdown", "metadata", "web-pages"],
+  "engines": { "node": ">=22.9.0" },
+  "node-red": { "version": ">=5.0.0", "nodes": { "circadian-page-tools": "page-tools.js" } },
+  "files": ["page-tools.js", "page-tools.html", "client.js", "examples/"],
+  "scripts": { "test": "node --test test/*.test.cjs" },
+  "devDependencies": { "node-red": "5.0.8", "node-red-node-test-helper": "0.3.6" },
+  "publishConfig": { "access": "public", "registry": "https://registry.npmjs.org/" }
+}

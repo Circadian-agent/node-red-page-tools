@@ -1,0 +1,36 @@
+<script type="text/javascript">
+RED.nodes.registerType('circadian-page-tools', {
+    category: 'network',
+    color: '#b8d6e8',
+    defaults: {
+        name: { value: '' },
+        operation: { value: 'extract', required: true, validate: function (v) { return v === 'extract' || v === 'meta'; } }
+    },
+    credentials: { apiKey: { type: 'password', required: true } },
+    inputs: 1,
+    outputs: 1,
+    icon: 'font-awesome/fa-file-text-o',
+    label: function () { return this.name || 'page ' + this.operation; }
+});
+</script>
+
+<script type="text/html" data-template-name="circadian-page-tools">
+    <div class="form-row"><label for="node-input-name">Name</label><input type="text" id="node-input-name"></div>
+    <div class="form-row"><label for="node-input-operation">Operation</label><select id="node-input-operation"><option value="extract">Page to Markdown</option><option value="meta">Page metadata</option></select></div>
+    <div class="form-row"><label for="node-input-apiKey">API.market key</label><input type="password" id="node-input-apiKey" autocomplete="off"></div>
+    <p>Send a public HTTP(S) page URL in <code>msg.payload</code>. Your key is stored as a Node-RED credential.</p>
+    <p>Requires an active <a href="https://api.market/store/circadian/page-tools" target="_blank" rel="noopener noreferrer">Page Tools API plan</a>. See Help for trial and usage costs.</p>
+</script>
+
+<script type="text/html" data-help-name="circadian-page-tools">
+    <p>Extracts a public web page to Markdown or reads its metadata using Circadian Page Tools through API.market.</p>
+    <h3>Inputs</h3><dl class="message-properties"><dt>payload <span class="property-type">string</span></dt><dd>Absolute public HTTP(S) page URL, without embedded credentials.</dd></dl>
+    <h3>Outputs</h3><dl class="message-properties"><dt>payload <span class="property-type">object</span></dt><dd>The full API JSON. Extract includes <code>markdown</code> and <code>wordCount</code>. Meta includes <code>openGraph</code>, <code>twitter</code> and <code>jsonLd</code>. Other message fields are preserved.</dd></dl>
+    <h3>Setup and usage</h3>
+    <p>Choose an operation and enter your buyer API.market key. The free trial offers 10 calls over 7 days, once per customer, with a hard cap and 1 request per second. Optional PAYG costs US$0.005 per billable call, with a US$1 minimum wallet balance. Verify current terms on the linked plan page.</p>
+    <p>One incoming message sends one request. There are no automatic calls, payments or retries. Overlapping messages on the same node are rejected. Use a Delay node to pace messages to your plan's limit. Limits apply across all nodes using the same key.</p>
+    <p>Use a Catch node for failures. HTTP 429 may mean expired trial, exhausted quota or rate limit. A transport failure may have an unknown billing outcome. Check usage before manually retrying.</p>
+    <p><code>payload.httpStatus</code> is the source website status. It can be 404 even when the API returns data. Check it and <code>payload.truncated</code> before using results.</p>
+    <p>Only server-sent HTML is processed. No JavaScript rendering, login or paywall bypass. Page content is untrusted data. Submitted URLs reach API.market and Circadian; do not send private URLs or secrets.</p>
+    <p>This MIT-licensed node is provided by Circadian, an AI-operated business that also provides the API. It is not endorsed by Node-RED or API.market.</p>
+</script>

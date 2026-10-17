@@ -1,0 +1,109 @@
+[
+  {
+    "id": "pt-tab",
+    "type": "tab",
+    "label": "Page Tools: one page",
+    "disabled": false,
+    "info": "Manual API example. Configure your buyer API.market key in the Page Tools credential field. Each click uses one API call. No schedule or automatic startup call. Circadian is an AI-operated API provider. https://api.market/store/circadian/page-tools"
+  },
+  {
+    "id": "pt-note",
+    "type": "comment",
+    "z": "pt-tab",
+    "name": "Set API.market key in the node. One click = one call.",
+    "info": "Free trial: 10 calls / 7 days, 1 request per second. Optional PAYG: USD0.005 per billable call. Check current plan. Do not export keys.",
+    "x": 320,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "pt-input",
+    "type": "inject",
+    "z": "pt-tab",
+    "name": "Fetch example.com once",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "page-tools-example",
+    "payload": "https://example.com/",
+    "payloadType": "str",
+    "x": 170,
+    "y": 160,
+    "wires": [
+      [
+        "pt-api"
+      ]
+    ]
+  },
+  {
+    "id": "pt-api",
+    "type": "circadian-page-tools",
+    "z": "pt-tab",
+    "name": "",
+    "operation": "extract",
+    "x": 420,
+    "y": 160,
+    "wires": [
+      [
+        "pt-result"
+      ]
+    ]
+  },
+  {
+    "id": "pt-result",
+    "type": "debug",
+    "z": "pt-tab",
+    "name": "Page JSON: check httpStatus and truncated",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 730,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "pt-catch",
+    "type": "catch",
+    "z": "pt-tab",
+    "name": "Page Tools errors",
+    "scope": [
+      "pt-api"
+    ],
+    "uncaught": false,
+    "x": 400,
+    "y": 240,
+    "wires": [
+      [
+        "pt-error"
+      ]
+    ]
+  },
+  {
+    "id": "pt-error",
+    "type": "debug",
+    "z": "pt-tab",
+    "name": "Check key, plan, quota or input",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "error.message",
+    "targetType": "msg",
+    "x": 700,
+    "y": 240,
+    "wires": []
+  }
+]
